@@ -9,10 +9,10 @@ The work in this project is for Project-OWL Summer Research with a goal to repli
 The three portions of the project (Web, CDP, LoRa) are all individual programs and must all run at the same time. To share information between the three scripts Redis Streams is used. Redis is an open-source, in-memory data structure store that can be used as a database, cache, and message broker.
 
 ![Redis-Stream-Arch](https://github.com/user-attachments/assets/f8cb6003-cf7f-421f-adc2-c0d5ab0054d0)
-### Figure 1: Redis Stream Archeticture
+### Figure 1: Redis Stream Architecture
 
 ### Redis-Explained
-Redis Streams is primarly used a message broker in this application, but also serves as backup if the redis-server were to fail so no data would be lost. Redis Streams were selected because the stream can be used in a non-blocking fashion. Unlike Redis Pub/Sub, there is no real time requirement to exchange information between programs. Each program acts a consumer group. Using consumer groups allows each program (consumer group) to individually process the data being publised to the stream. Every messages can be seen by all consumer groups but each consumer group will process the information differently. 
+Redis Streams is primarily used a message broker in this application, but also serves as backup if the redis-server were to fail so no data would be lost. Redis Streams were selected because the stream can be used in a non-blocking fashion. Unlike Redis Pub/Sub, there is no real time requirement to exchange information between programs. Each program acts a consumer group. Using consumer groups allows each program (consumer group) to individually process the data being publised to the stream. Every messages can be seen by all consumer groups but each consumer group will process the information differently. 
 
 ### Publishing
 Publishing to a redis stream works with key value pair. The key is used to denote the sender and receiver of the message. The current implemention with just the three consumer groups for the key is: sender_receiver. For example, if the CDP team is sending a packet to LoRa: CDP_LORA.
@@ -21,10 +21,10 @@ Publishing to a redis stream works with key value pair. The key is used to denot
 
 As a message broker, user input from the web team is formatted into a string which is then published to the redis stream. 
 
-The archeitcture for the redis stream is simple but dynamic enough to allow for an physical layer to be added. Physical layer refers to how the message will be sent out, the current implemenetation is LoRa, but other technologies, such as, FSK can be implemented in similar fashion. 
+The architecture for the redis stream is simple but dynamic enough to allow for a physical layer to be added. Physical layer refers to how the message will be sent out, the current implementation is LoRa, but other technologies, such as, FSK can be implemented in a similar fashion. 
 
 ### Web App
-Description of what the web app does
+The “web interface” is simply a portal hosted on a client device that allows a user to send messages using a QUAD Pro duck. The functionality on desktop and mobile is exactly the same, which is key to the goals of the project. It should be as accessible as possible for any end-user regardless of their device or location. The bottom of the page is a chat box that functions similarly to a text message interface. Sent messages are displayed justified on the right, and received are on the left.
 
 ### CDP 
 Description of what CDP does
@@ -69,7 +69,7 @@ cd main
 ## Editing files
 If you wish to transmit a different message: change the input.txt file. 
 If you wish to change the wiring, edit sx1262.h
-If you wish to change LORA paramaters, edit sx1262.h
+If you wish to change LORA parameters, edit sx1262.h
 
 After making changes compile the code with the following commands: the first for tx, and the second for rx portion.
 ```
@@ -81,21 +81,21 @@ gcc file_test_rx.c helpFunctions.c cdp.c sx1262.c -o writeFile -llgpio
 
 ### Running Example Code 
 #### RX
-Naviagate to the rx directory
+Navigate to the rx directory
 For one-shot mode, in which you would receive only one message
 ```
 cd files
 cd rx
 ./receive
 ```
-To test continous mode where the program will run until cancelled and receive messages
+To test continuous mode where the program will run until cancelled and receive messages
 ```
 cd files
 cd rx
 ./receiveCont
 ```
 #### TX
-Navaiagte to tx directory
+Navigate to tx directory
 ```
 cd files
 cd tx
@@ -103,7 +103,7 @@ cd tx
 ```
 
 ## Install GPIO DRIVER
-To install LG indepent to this project:
+To install LG independent to this project:
 
 ``````wget http://abyz.me.uk/lg/lg.zip  
 unzip lg.zip  
@@ -126,7 +126,7 @@ There are rx and tx directories with basic examples. cd into the respective fold
 
 If you wish to send different messages just edit the transmit.c, line 66 and 68 are the only lines required to edit
 
-After editting a file you must recompile:
+After editing a file you must recompile:
 
 Use this command to compile:
 
