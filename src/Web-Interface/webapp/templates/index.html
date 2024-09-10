@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ClusterDuck Portal</title>
+        <meta name="description" content="ClusterDuck Network Portal by the ClusterDuck Protocol">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .active {
+                width: 150px;
+                float: left;
+                color: white;
+                font-weight: bold;
+                margin: 0 0 0 5px;
+                height: 10%;
+            }
+
+            body {
+                font: 14px "Avenir", helvetica, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                padding: 2em;
+                background: #2d2d2d;
+                box-sizing: border-box;
+                height: 100vh;
+                overflow-y: scroll;
+                /* Background of the whole page */
+            }
+
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                align-content: center;
+                flex-wrap: wrap;
+                width: 80vw;
+                margin: 0 auto;
+                min-height: 8vh;
+                /* Container for send button */
+            }
+
+            .btn {
+                max-width: 75%;
+                margin-top: 10px;
+                margin-bottom: 32px;
+                margin: auto;
+                font-weight: 700;
+                font-size: 14px;
+                text-decoration: none;
+                color:#111;
+                border-radius: 12px;
+                text-align: center;
+                padding: 0.5em;
+                flex: 1 1 auto;
+                transition: 0.5s;
+                background-size: 200% auto;
+                /* Send button part 1 */
+            }
+
+            .btn:hover {
+                background-position: right center;
+                cursor: pointer;
+                /* Send button part 2 */
+            }
+
+            .sendReportBtn {
+                background-image: linear-gradient(to right, rgb(8, 246, 242) 0%, rgb(255, 113, 248) 51%, rgb(8, 246, 242) 100%);
+                /* width: 100%; */
+                /* Send button part 3 */
+            }
+
+            h1 {
+                font-size: 42px;
+                font-family:Verdana, Geneva, Tahoma, sans-serif;
+                background-image: linear-gradient(to right, rgb(8, 246, 242), rgb(255, 113, 248));
+                color: transparent;
+                background-clip: text;
+                text-align: center;
+                margin: 16px 0 8px;
+                /* Main title style */
+            }
+
+            h3 {
+                font-size: 14px;
+                margin: 0 0 24px;
+                color: #c2c2c2;
+                font-weight: 400;
+                /* Subtitle style */
+            }
+
+            .content {
+                text-align: center;
+                /* Main page styling */
+            }
+
+            .messageDisplayArea {
+                flex: 1;
+                overflow-y: scroll;
+                padding: 10px;
+                height: 200px;
+                /* Sent/received message area */
+            }
+
+            .messageDisplayArea::-webkit-scrollbar {
+                width: 6px;
+                /* Sent/received message area */
+            }
+
+            .messageDisplayArea::-webkit-scrollbar-track {
+                background: #ddd;
+                /* Sent/received message area */
+            }
+
+            .messageDisplayArea::-webkit-scrollbar-thumb {
+                background: #bdbdbd;
+                /* Sent/received message area */
+            }
+
+            .msg {
+                display: flex;
+                align-items: flex-end;
+                margin-bottom: 10px;
+                /* Sent/received message options */
+            }
+
+            .msg:last-of-type {
+                margin: 0;
+                /* Sent/received message options */
+            }
+
+            .msg-bubble {
+                max-width: 450px;
+                padding: 15px;
+                border-radius: 15px;
+                background: #5f5f5f;
+                /* Sent/received message options */
+            }
+
+            .msg-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+                /* Sent/received message options */
+            }
+
+            .msg-info-name {
+                margin-right: 10px;
+                font-weight: bold;
+                /* Sent/received message options */
+            }
+
+            .msg-info-time {
+                font-size: 0.85em;
+                font-weight: bold;
+                /* Sent/received message options */
+            }
+
+            .msg-info-topic {
+                font-size: 1em;
+                margin-right: 10px;
+                font-weight: bold;
+                /* Sent/received message options */
+            }
+
+            .left-msg .msg-bubble {
+                border-bottom-left-radius: 0;
+                /* Received message option */
+            }
+
+            .right-msg {
+                flex-direction: row-reverse;
+                /* Sent message options */
+            }
+
+            .right-msg .msg-bubble {
+                background-image: linear-gradient(to right, rgb(8, 246, 242), rgb(255, 113, 248));
+                color: black;
+                border-bottom-right-radius: 0;
+                /* Sent message options */
+            }
+
+            .right-msg .msg-img {
+                margin: 0 0 0 10px;
+                /* Sent message options */
+            }
+
+            .updateBox {            
+                background-color: #2A2C49; 
+                color: #ffffff;
+                padding: 18px 24px 14px;
+                border-radius: 8px;
+                display: flex;
+                flex-flow: column wrap;
+                justify-content: space-between;
+                height: 30%;
+                /* Bottom box */
+            }
+
+            #form {
+                background-color: #F5F5F5;
+                color: #ffffff;
+                padding: 18px 24px 14px;
+                border-radius: 8px;
+                text-align: left;
+                margin-bottom: 2em;
+                /* Main message send box */
+            }
+
+            .textbox {
+                border-image: linear-gradient(to right, rgb(8, 246, 242) , rgb(255, 0, 242)) 1;
+                border-width: 2px;
+                border-style: solid;
+                padding: 4px;
+                margin: .5em 0;
+                display: block;
+                background: #989898;
+                color: #ffffff;
+                /* Main message textbox */
+            }
+
+            .textbox-small {
+                width: 20px;
+                background: #2d2d2d;
+                color: #a5a4a4;
+            }
+
+            .textbox-full {
+                width: 95%;
+                height: 5em;
+                background: #5f5f5f;
+                color: #ffffff;
+            }
+
+            textarea {
+                resize: none;
+                /* Main message textbox */
+            }
+
+            label {
+                font-weight: bold;
+                /* Label formatting */
+            }
+
+            .hidden {
+                display: none;
+            }
+
+        </style>
+
+        <script>
+
+            // Function to check if the page is being reloaded
+            function isPageReloaded() {
+                // Check if the performance navigation type is reload
+                if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+                    return true;
+                }
+                return false;
+            }
+
+            // Alert user before the page is unloaded and send data to server
+            window.addEventListener('beforeunload', function (e) {
+                if (isPageReloaded()) {
+                    var confirmationMessage = 'The page is about to be reloaded. Are you sure you want to leave?';
+                    (e || window.event).returnValue = confirmationMessage; // Standard for most browsers
+                    return confirmationMessage; // Standard for some older browsers
+                }
+            });
+        
+        </script>
+    
+        <!-- Jquery source code -->
+        <script src="static/jquery-3.7.1.min.js"></script>
+
+        <!-- Socket.IO source code -->
+        <script src="static/socket.io.min.js"></script>
+        
+        <script>
+
+            // Socketio code
+            const socket = io();
+
+            var lastMessage = "";
+
+            function pollServer() {
+                socket.send("polling");
+            }
+
+            setInterval(pollServer, 5000);
+
+            socket.on("connect", pollServer());
+
+            socket.on("message", function(message) {
+                if (message.slice(-1) == "1"){      // Ignore messages that have already been read
+                } else if (message == lastMessage) {    // Ignore identical repeat messages due to file event errors
+                } else {
+                
+                // Find indicies of important words
+                const index1 = message.indexOf('TOPIC:');
+                const index2 = message.indexOf('DATA:');
+                const originalContent = get(".messageDisplayArea");
+                
+                // Slice the message into its components
+                const SDUID = message.slice(6, index1);
+                const TOPIC = message.slice(index1 + 6, index2);
+                const DATA = message.slice(index2 + 5);
+
+                // Add received message to messageDisplayArea
+                appendMessage(SDUID, "You", TOPIC, "left", DATA, originalContent);
+                lastMessage = message;
+                }
+            });
+
+        </script>
+
+        <script>
+
+            // Jquery code to submit message from portal
+            $(document).ready(function() {
+            $('form').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/submit',
+                    data: $('form').serialize(),
+                    success: function() {
+                        $('#DUID').val('');
+                        $('#TOPIC').val('');
+                        $('#DATA').val('');
+                        alert('Form submitted!');
+                    }
+                });
+                    // Reset text area and character counter
+                    document.getElementById("commentsInput").value = "";
+                    document.getElementById("counter").innerHTML = 225;
+            });
+            });
+
+        </script>
+    </head>
+
+    <body>
+
+        <!-- HTML content of the captive portal below -->
+        <h1>CLUSTERDUCK PORTAL</h1>
+        <div class="content main" id="formContent">
+
+            <h3>Fill out the form below to submit information to the ClusterDuck network.</h3>
+            <div id="form" style="background-color:rgb(42, 44, 73);">
+
+                <!-- HTML content of message form -->
+                <form action="/submit" method="post" id="webInterfaceForm">
+
+                    <label for="DUCK_TYPE" style="color: white;">Duck Type: </label>
+                    <select id="DUCK_TYPE" style="background-color: #989898;" style="color: white;" name="DUCK_TYPE">
+                        <option hidden disabled selected value> -- Select a duck type -- </option>
+                        <option value="PAPA">PapaDuck</option>
+                        <option value="MAMA">MamaDuck</option>
+                        <option value="LINK">DuckLink</option>
+                        <option value="DETECTOR">DetectorDuck</option>
+                    </select></p>
+
+                    <label for="DUID" style="color: white;">Destination Device User ID: </label>
+                    <input type="text" id="DUID" name="DUID" style="background-color: #989898;"  maxlength=8 minlength=8></p>
+                    
+                    <label for="TOPIC:" style="color: white;">Topic: </label>
+                    <select id="TOPIC" style="background-color: #989898;" style="color: white;" name="TOPIC">
+                        <option hidden disabled selected value> -- Select a topic -- </option>
+                        <option value="Status">Status: Generic, non-emergency message</option>
+                        <option value="Alert">Alert: Emergency message</option>
+                        <option value="DCMD">Send a Duck command</option>
+                    </select></p>
+
+                    <label for="status" style="color: white;">Your message:</label><br/>
+                    <textarea class="textbox comments textbox-full" minlength=1 maxlength=225 name="DATA" style="color: white;"id="commentsInput" cols="30"
+                            rows="2" onkeyup="updateCounter(this)"></textarea>
+
+                            Remaining characters: <span style="color: white;" id="counter">225</span>
+
+                            <script type="text/javascript">
+                            function updateCounter(textarea) {
+                                var currentLength = textarea.value.length;
+                                var maxCharacters = 225;
+                                var remainingCharacters = maxCharacters - currentLength;
+                                document.getElementById("counter").innerHTML = remainingCharacters;  
+                            }
+
+                            </script>
+                    </textarea>
+
+                    <div class="container">
+                        <button onclick="displayText()" class="btn sendReportBtn">Send</button>
+                    </div>
+
+                    <p id="makeshiftErrorOutput" class="hidden"></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- HTML content of send/received message area -->
+        <section class="updateBox">
+            <label type="text" style="background-color:rgb(42, 44, 73);">Message History: </label>
+
+            <div class="messageDisplayArea">
+                <div class="msg left-msg"></div>
+                <div class="msg right-msg"></div>
+            </div>
+
+            <script>
+                // Define array for messages
+                var messages = [];
+                // Define message count
+                var messageCount = 0;
+                // Create an array of duck types to store selections
+                var duckTypes = [];
+
+                function displayText() {
+
+                    // Store the selected value of DUCK_TYPE in duckType array
+                    document.getElementById("webInterfaceForm").onsubmit = function() {
+                        duckTypes.push(document.getElementById("DUCK_TYPE").value);
+                    };
+
+                    // Gets current content of update box
+                    const chatContents = get(".messageDisplayArea");
+
+                    // Create JSON object for msg
+                    var msg = {
+                        'DUID': document.getElementById("DUID").value,
+                        'TOPIC': document.getElementById("TOPIC").value,
+                        'DATA': document.getElementById("commentsInput").value,
+                    };
+
+                    // Exits function if any section is invalid
+                    if (validSubmission(msg.DUID, msg.TOPIC, msg.DATA)) {
+
+                    // Append the values from the form to the array
+                    messages.push(msg);
+                    
+                    // Add the message to the portal
+                    appendMessage('You', messages[messageCount].DUID, messages[messageCount].TOPIC, 'right', messages[messageCount].DATA, chatContents);
+
+                    // Increment message count
+                    messageCount++;
+                    }
+                }
+
+                // Helper function to format dates into standard time
+                function formatDate(date) {
+                    const h = date.getHours();
+                    const m = "0" + date.getMinutes();
+                    const s = h < 12 ? "AM" : "PM";
+                    return `${(h % 12) || 12}:${m.slice(-2)} ${s}`;
+                }
+
+                // On page load, set the value of Duck Type if selected previously
+                window.onload = function() {
+                    if (messageCount > 0) {
+                        document.getElementById("DUCK_TYPE").value = duckTypes[messageCount - 1];
+                    }
+                };
+
+            </script>
+        </section>
+
+        <!-- Run javascript actions here -->
+        <script type="text/javascript">
+            
+            // Function to add sent/received messages to messageDisplayArea 
+            function appendMessage(sender, recipient, topic, side, text, html_content) {
+                    const newHTML = `
+                        <div class="msg ${side}-msg">
+
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                            <div class="msg-info-name">${sender} to ${recipient}</div>
+                            <div class="msg-info-topic">Topic: ${topic}</div>
+                            <div class="msg-info-time">${formatDate(new Date())}</div>
+                            </div>
+
+                            <div class="msg-text">${text}</div>
+                        </div>
+                        </div>
+                    `;
+
+                    html_content.insertAdjacentHTML("beforeend", newHTML);
+                    html_content.scrollTop += 500;
+            }
+
+            // Support function for getting HTML content of a given section
+            function get(selector, root = document) {
+                    return root.querySelector(selector);
+            }
+
+            function validSubmission(DUID, TOPIC, DATA) {
+                if (DUID.length != 8) {
+                    return false
+                }
+                else if (TOPIC == ""){
+                    return false
+                }
+                else if (DATA == ""){
+                    return false
+                }
+                return true
+            }
+        </script>
+    </body>
+</html>
