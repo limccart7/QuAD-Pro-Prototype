@@ -1,0 +1,3 @@
+sudo nmcli device wifi hotspot ssid QuADbackup password ducknet! ifname wlan0
+
+source /web_py_env/bin/activate
