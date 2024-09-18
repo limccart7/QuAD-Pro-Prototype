@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <lgpio.h>
 #include <math.h>
-#include "transmit.h"
+#include "sx1262.h"
 #include "sx1262x_defs_custom.h"
 #include "helpFunctions.h"
 
