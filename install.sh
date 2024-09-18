@@ -18,14 +18,19 @@ sudo rm -rf lg
 sudo rm -rf lg.zip
 #!/bin/bash
 
-# Print a message with the current working directory
-echo "The current working directory is: $(pwd)"
-cd src/utils
 
 # making executable for spi loopback test
 # pwd /QuAD-Pro-Prototype/src/utils
-
+cd src/utils
 gcc spi_loopback_test.c -o spi_loopback_test -llgpio
+cd messageBroker
+mkdir build
+cd build
+cmake ..
+make 
+
+cd ..
+cd ..
 cd ..
 # pwd /Quad-Pro-Prototype/src
 # Cmake stuff to ensure cmakecache is local to user, and executable can be run
