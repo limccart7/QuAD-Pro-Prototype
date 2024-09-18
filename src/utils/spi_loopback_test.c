@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <lgpio.h>
-
+#include <string.h>
 int lgpio_init(void);
 int spiHandle(int spiDev, int spiChannel, int spiBaud, int spiFlag);
 void printBuffer(const char *buffer, int len);
@@ -26,6 +26,7 @@ int main() {
         printf("Failed to transfer data with SPI device: error code %d\n", xferCount);
         lgSpiClose(spi_handle);
         return 1;
+		
     }
     printf("Transferred %d bytes with SPI device\n", xferCount);
 

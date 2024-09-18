@@ -1,0 +1,3 @@
+/home/wyattcolburn/QuAD-Pro-Prototype/src/LoRa/build/CMakeFiles/main.dir
+/home/wyattcolburn/QuAD-Pro-Prototype/src/LoRa/build/CMakeFiles/edit_cache.dir
+/home/wyattcolburn/QuAD-Pro-Prototype/src/LoRa/build/CMakeFiles/rebuild_cache.dir

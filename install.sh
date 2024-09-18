@@ -16,4 +16,5 @@ sudo make install
 cd ..
 rm -rf lg
 
-
+cd /src/utils
+gcc spi_loopback_test.c -o spi_loopback_test -llgpio

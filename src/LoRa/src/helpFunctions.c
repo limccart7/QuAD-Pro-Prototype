@@ -7,7 +7,7 @@
 int lgpio_init(void) {
     uint8_t h;
     int chip_handle = is_raspberry_pi_5() ? 4: 0;		
-	h = lgGpiochipOpen(4); //opening a connection linux kernel spidev #
+	h = lgGpiochipOpen(chip_handle); //opening a connection linux kernel spidev #
 							
     if (h >= 0) {
         puts("GPIO chip opened");
