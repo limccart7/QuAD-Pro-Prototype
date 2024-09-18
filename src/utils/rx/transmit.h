@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <math.h>
 #ifndef spi_loopback_h
 #define spi_loopback_h
 
@@ -27,7 +28,7 @@ int getStatus(int spi_handle, char opcode, char *response, int response_len);
 void gpio_init(int chip_handle);
 void wait_on_busy(void);
 void tx_mode_attempt(uint8_t* data, uint16_t len);
-
+void receive();
 void sendCommand(int spi_handle, uint8_t command, uint8_t* data, uint8_t command_len);
 int send_read_command(int spi_handle, uint8_t command, uint8_t* data, int command_len);
 //set function protypes

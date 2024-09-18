@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <lgpio.h>
-#include <math.h>
-#include "../header_files/transmit.h"
 #include "helpFunctions.h"
 #include "sx1262x_defs_custom.h"
-#include "../header_files/helpFunctions.h"
-
+#include "helpFunctions.h"
+#include "transmit.h"
 #define GET_STATUS_OP                   UINT8_C(0xC0)
 #define GET_STATS_OP                    UINT8_C(0x10)
 #define GET_RST_STATS_OP                UINT8_C(0x00)
