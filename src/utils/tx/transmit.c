@@ -35,6 +35,7 @@
 	/*VCC (XTAL) 4 -> Pin 1*/
 	/*A5 5*/
 	/*A6 6*/
+
 int enterMessage(char *messageBuffer);
 uint16_t count_characters(const char *input);
 // Function prototypes
