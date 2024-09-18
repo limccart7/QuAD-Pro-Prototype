@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <lgpio.h>
-#include <math.h>
 #include "sx1262.h"
 #include "sx1262x_defs_custom.h"
 #include "helpFunctions.h"
-
+#include "string.h"
 int lgpio_init(void) {
     uint8_t h;
-    h = lgGpiochipOpen(4);
-
+    int chip_handle = is_raspberry_pi_5() ? 4: 0;		
+	h = lgGpiochipOpen(chip_handle); //opening a connection linux kernel spidev #
+							
     if (h >= 0) {
         puts("GPIO chip opened");
     } else {
@@ -71,3 +71,24 @@ uint8_t getCommand(int spi_handle, uint8_t opcode, uint8_t* data, uint8_t len) {
 	return status;
 }
 
+int is_raspberry_pi_5(void) {
+    FILE *fp;
+    char buffer[256];
+
+    fp = fopen("/proc/device-tree/model", "r");
+    if (fp == NULL) {
+        perror("Failed to open /proc/device-tree/model");
+        return 0; // Default to not Raspberry Pi 5 if we can't read the model
+    }
+
+    if (fgets(buffer, sizeof(buffer), fp) != NULL) {
+        fclose(fp);
+        if (strstr(buffer, "Raspberry Pi 5") != NULL) {
+            return 1; // It is a Raspberry Pi 5
+        }
+    } else {
+        fclose(fp);
+    }
+
+    return 0; // Not a Raspberry Pi 5
+}
