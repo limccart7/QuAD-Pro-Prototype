@@ -17,21 +17,31 @@ int main(){
 
 	char message_buffer[512];
 	char messageID[30];	
-    // Read messages from the consumer group
-	puts("reading the stream from consumer group");
-    readStream(c, stream_name, message_buffer);
-/*
-	read_from_consumer_group(c, stream_name, consumer_group, consumer_name, message_buffer, messageID);
-	puts("printing response buffer:\n");
-	printf("Message Content: %s\n", message_buffer);	
-	printf("Message ID: %s\n", messageID);
 
-	check_pending_messages(c, stream_name, consumer_group);
-	puts("try to ack");
-	acknowledge_message(c, stream_name, consumer_group, messageID);
-	check_pending_messages(c, stream_name, consumer_group);
- */	
+	//creating an array of key value pairs to be populated when reading stream
+	int maxMessages = 100;
+	size_t totalMessages = 0;
+
+
+	KeyValuePair * messageArray = malloc(maxMessages * sizeof(KeyValuePair));
+    if (messageArray == NULL) {
+		fprintf(stderr, "Mem Allocation failed\n");
+		exit(1);
+	}
+
+	read_from_consumer_group_dynamic(c, stream_name, consumer_group, consumer_name, &messageArray, &totalMessages);
+
+	//print the messages
+	for (int messageCounter = 0; messageCounter < totalMessages; messageCounter++) {
+		printf("Key Received: %s\n", messageArray[messageCounter].key);
+		printf("Message Received: %s\n", messageArray[messageCounter].key);
+		printf("Message ID Received: %s\n", messageArray[messageCounter].messageID);
+
+		check_pending_messages(c,stream_name,consumer_group, messageArray[messageCounter].messageID);
+		acknowledge_message(c, stream_name, consumer_group, messageArray[messageCounter].messageID);
+	}
 	redisFree(c);
+	return 0;	
 }
 
 
