@@ -5,7 +5,6 @@
 #include "helpFunctions.h"
 #include "string.h"
 #include "sx1262.h"
-#include "redis.h"
 #define GET_STATUS_OP                   UINT8_C(0xC0)
 #define GET_STATS_OP                    UINT8_C(0x10)
 #define GET_RST_STATS_OP                UINT8_C(0x00)
