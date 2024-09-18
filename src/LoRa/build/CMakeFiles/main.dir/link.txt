@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/main.dir/src/main.c.o CMakeFiles/main.dir/src/redis.c.o CMakeFiles/main.dir/src/helpFunctions.c.o CMakeFiles/main.dir/src/sx1262.c.o -o main  -llgpio -lhiredis -lpthread 
