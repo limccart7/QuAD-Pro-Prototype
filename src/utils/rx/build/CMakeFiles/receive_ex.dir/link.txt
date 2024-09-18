@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/receive_ex.dir/src/receive_ex.c.o CMakeFiles/receive_ex.dir/src/helpFunctions.c.o CMakeFiles/receive_ex.dir/src/sx1262.c.o -o receive_ex  -llgpio 
