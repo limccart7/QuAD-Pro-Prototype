@@ -11,8 +11,10 @@ add_executable(redis_consumer src/redis_consumer.c src/redis.c)
 
 add_executable(delete_stream src/delete_stream.c src/redis.c)
 
+add_executable(redis_stream src/redis_stream.c src/redis.c)
 
 # Link the necessary libraries to each executable
 target_link_libraries(publish_custom PRIVATE hiredis)
 target_link_libraries(redis_consumer PRIVATE hiredis)
 target_link_libraries(delete_stream PRIVATE hiredis)
+target_link_libraries(redis_stream PRIVATE hiredis)
