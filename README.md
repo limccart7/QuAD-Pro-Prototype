@@ -28,8 +28,12 @@ The “web interface” is simply a portal hosted on a client device that allows
 
 ### CDP 
 Description of what CDP does
+
+
 ### LoRa
-Description of what LoRa does
+The LoRa directory in the source folder contains all the code corresponding with the sx1262 physical layer. The code leverages the lg library which enables control of the GPIO pin on the raspberry pi. The sx1262 chip is controlled through SPI. 
+
+On a high level the LoRa portion listens to LoRa messages and redis messages. It forwards the contains of LoRa packet to the CDP team, and transmits the CDP packets from the LoRa side. It is its own consumer group.
 
 ### How to run the program
 
@@ -46,7 +50,10 @@ bash install.sh
  The first program you should run is spi_loopback_test
  Make sure to short MOSI to MISO (GPIO PINS 10 --> GPIO 9)
  ```
- ./spi_loopback_test
+ cd /QuAD-Pro-Prototype/src/utils/
+
+./spi_loopback_test
+
 ```
 ### File Transfer Test
 To simulate the message broker, first the receive and transmit functionality will be tested using files to read messages and write messages. 
