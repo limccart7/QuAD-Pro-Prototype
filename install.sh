@@ -44,6 +44,21 @@ mkdir build
 cd build
 cmake ..
 make 
-
-
+# cmake stuff for receive example
+cd .. 
+cd ..
+cd utils
+cd rx
+mkdir build
+cd build
+cmake ..
+make 
+# cmake stuff for transmit example
+cd .. 
+cd ..
+cd tx
+mkdir build
+cd build
+cmake ..
+make 
 #no cmake for web-interface as it is written in python
