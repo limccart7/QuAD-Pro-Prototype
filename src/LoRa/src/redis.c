@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <hiredis/hiredis.h>
 #include "redis.h"
