@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
 		
 
 	redisContext * c = redis_init("127.0.0.1", 6379);
-	delete_stream(c, "mystream");
     char response[256]; // Ensure response buffer is large enough
     publish(c, "mystream", "WEB_CDP", messageBuff, response);
 

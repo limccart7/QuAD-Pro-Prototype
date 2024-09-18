@@ -133,23 +133,29 @@ void readStream(redisContext *redis_connect, const char *stream_name, char *resp
     redisReply *reply = (redisReply *)redisCommand(redis_connect, "XRANGE %s - +", stream_name);
 
     if (reply->type == REDIS_REPLY_ARRAY) { 
-        for (size_t i = 0; i < reply->elements; i++) {
-            redisReply *message = reply->element[i];
-            redisReply *fields = message->element[1];
+        
+		if (reply->elements > 0) {
+			for (size_t i = 0; i < reply->elements; i++) {
+				redisReply *message = reply->element[i];
+				redisReply *fields = message->element[1];
 
-            // Assuming the message is stored as key-value pairs, and you want the value (not the key)
-            for (size_t j = 1; j < fields->elements; j += 2) {
-				printf("stream key : %s\n",  fields->element[j-1]->str);
-				printf("reading stream : %s\n", fields->element[j]->str);
-                strcat(response, fields->element[j]->str); // Append the value to the response buffer
+				// Assuming the message is stored as key-value pairs, and you want the value (not the key)
+				for (size_t j = 1; j < fields->elements; j += 2) {
+					printf("stream key : %s\n",  fields->element[j-1]->str);
+					printf("reading stream : %s\n", fields->element[j]->str);
+					strcat(response, fields->element[j]->str); // Append the value to the response buffer
 
-                if (j + 2 < fields->elements) {
-                    strcat(response, ", ");  // Add a comma and space between multiple values
-                }
-            }
-        }
-    }
-    freeReplyObject(reply);
+					if (j + 2 < fields->elements) {
+						strcat(response, ", ");  // Add a comma and space between multiple values
+					}
+				}
+			}
+		}
+		else {
+			printf("Stream is empty\n");
+		}
+	}
+	freeReplyObject(reply);
 }
 
 void create_consumer_group(redisContext *c, const char *stream_name, const char *group_name) {
