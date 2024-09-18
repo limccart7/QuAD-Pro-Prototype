@@ -40,12 +40,17 @@ On a high level the LoRa portion listens to LoRa messages and redis messages. It
 
 
 
-## Cloning the Repo
+## Cloning the Repo and running install script
 ```
 git clone https://github.com/wyattcolburn/Project-OWL.git
 chmod +X install.sh
 bash install.sh
 ```
+An installation script has been written to create all the cmake files and download the dependecies. It is recommended to familar yourself with the install script to understand what is being downloaded on your machine. The executables of the CDP and LoRa portions of code will be in their corresponding build files
+
+chmod -X allows the script to be ran. Raspberry pi os uses bash
+
+
 ### Running Spi Loopback Test
  The first program you should run is spi_loopback_test
  Make sure to short MOSI to MISO (GPIO PINS 10 --> GPIO 9)
