@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <lgpio.h>
-#include "spi_loopback.h"
+
+int lgpio_init(void);
+int spiHandle(int spiDev, int spiChannel, int spiBaud, int spiFlag);
+void printBuffer(const char *buffer, int len);
+int is_raspberry_pi_5(void);
 
 // Function prototype
 int main() {
     puts("start");
-    lgpio_init();
+    int chip_hanlde = lgpio_init();
 
     // Open the SPI device, spi_handle is a handle
     int spi_handle = spiHandle(0, 0, 9600, 0);
@@ -45,8 +49,11 @@ int main() {
     return 0;
 }
 
+
+
 int lgpio_init(void) {
     uint8_t h;
+	 int chip_handle = is_raspberry_pi_5() ? 4 : 0; //detects which pi we are on, raspberry pi should open gpiochip
     h = lgGpiochipOpen(0);
 
     if (h >= 0) {
@@ -54,7 +61,7 @@ int lgpio_init(void) {
     } else {
         puts("Failed to open GPIO chip");
     }
-    return h;
+    return chip_handle;
 }
 
 int spiHandle(int spiDev, int spiChannel, int spiBaud, int spiFlag) {
@@ -66,7 +73,27 @@ int spiHandle(int spiDev, int spiChannel, int spiBaud, int spiFlag) {
     }
     return spiOpenVal;
 }
+int is_raspberry_pi_5(void) {
+    FILE *fp;
+    char buffer[256];
 
+    fp = fopen("/proc/device-tree/model", "r");
+    if (fp == NULL) {
+        perror("Failed to open /proc/device-tree/model");
+        return 0; // Default to not Raspberry Pi 5 if we can't read the model
+    }
+
+    if (fgets(buffer, sizeof(buffer), fp) != NULL) {
+        fclose(fp);
+        if (strstr(buffer, "Raspberry Pi 5") != NULL) {
+            return 1; // It is a Raspberry Pi 5
+        }
+    } else {
+        fclose(fp);
+    }
+
+    return 0; // Not a Raspberry Pi 5
+}
 void printBuffer(const char *buffer, int len) {
     // This function takes a buffer and outputs it byte by byte
     for (int i = 0; i < len; i++) {
@@ -74,4 +101,3 @@ void printBuffer(const char *buffer, int len) {
     }
     printf("\n");
 }
-
