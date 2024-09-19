@@ -14,6 +14,10 @@ The three portions of the project (Web, CDP, LoRa) are all individual programs a
 ### Redis-Explained
 Redis Streams is primarily used a message broker in this application, but also serves as backup if the redis-server were to fail so no data would be lost. Redis Streams were selected because the stream can be used in a non-blocking fashion. Unlike Redis Pub/Sub, there is no real time requirement to exchange information between programs. Each program acts a consumer group. Using consumer groups allows each program (consumer group) to individually process the data being publised to the stream. Every messages can be seen by all consumer groups but each consumer group will process the information differently. 
 
+
+VERY IMPORTANT: The consumer group is not able to see messages that exist in the stream before the consumer group has been created. Therefore, in the start script each consumer group should be created before the first message is sent. 
+
+
 ### Publishing
 Publishing to a redis stream works with key value pair. The key is used to denote the sender and receiver of the message. The current implemention with just the three consumer groups for the key is: sender_receiver. For example, if the CDP team is sending a packet to LoRa: CDP_LORA.
 
@@ -39,7 +43,6 @@ On a high level the LoRa portion listens to LoRa messages and redis messages. It
 
 
 
-
 ## Cloning the Repo and running install script
 ```
 git clone https://github.com/wyattcolburn/Project-OWL.git
@@ -49,6 +52,21 @@ bash install.sh
 An installation script has been written to create all the cmake files and download the dependecies. It is recommended to familar yourself with the install script to understand what is being downloaded on your machine. The executables of the CDP and LoRa portions of code will be in their corresponding build files
 
 chmod -X allows the script to be ran. Raspberry pi os uses bash
+
+## CMAKE
+
+This project is built with cmake, within the all the src directories but the Web-Interface (written in Python) have a CMakeLists.txt. The installation script will create all the executables, however, when editting a source file you will have to recompile. Naviagte to the build directory within that source directory and have cmake build the project and the make to create the executables.
+
+
+```
+cd ..
+cd build
+cmake ..
+make
+ls 
+```
+![image](https://github.com/user-attachments/assets/06ab1700-ec3a-4f14-afcd-1174c26f4e52)
+
 
 ## Utility Directory
 This directory provides scripts written for quick proof of concepts. The first one you should urn is the spi loopback test to verify that your raspberry pi is working.
@@ -103,12 +121,68 @@ sudo systemctl stop redis-server
 ![image](https://github.com/user-attachments/assets/bb894aa9-6893-4bed-94b6-7a3cd74dc797)
 This is an indicator of a successful operation
 
-After creating a server, a consumer group is needed and a publisher is needed. In the 
+After creating a server, a consumer group is needed and a publisher is needed. In the QuAD-Pro-Prototype/src/utils/messageBrokerthere are the following executables:
 
+"delete_stream" --this executable clears the stream, streams will store old messages so when you purely read the stream you will see every message published to the stream for as long as it has been online
+
+"publish_custom" --this executable publishes a custom message with a predefined key, you have to edit source file and recompile to change the key
+
+"redis_stream" --reads the stream, does not use consumer group, it will show every message in the stream
+
+"redis_consumer" --creates a consumer group, if consumer group already exists throws an error but it does not matter, will then read that stream from that. This program acknowledges messages so you will not                    see the same message if the executable is run multiple times
+
+### This example is to show some of the principles of redis streams
+In the first terminal we will start the server
+```
+sudo systemctl stop redis-server
+redis-server
 
 ```
+In the second terminal we will delete the stream to ensure we are working with a new stream
 
 ```
+./delete_stream
+
+```
+Then we will read the stream, nothing should be in the stream
+```
+./redis_stream
+```
+We are going to create the consumer group before publishing messages to avoid missing the message
+```
+./redis_consumer
+```
+
+Now in lets publish a message
+```
+./publish_custom "hello world"
+```
+Now lets read the stream to see the message
+```
+./redis_stream
+```
+What about the reading it as a consumer
+```
+./redis_consumer
+```
+lets publish another message
+```
+./publish_custom "second message"
+```
+Lets read the stream again, notice we see both messages
+```
+./redis_stream
+```
+When we read as a consumer we only see the second message because we already acknowledged the first message
+```
+./redis_consumer
+```
+
+![image](https://github.com/user-attachments/assets/d924ec82-f5ad-46dc-bd8c-69cb85d432d7)
+![image](https://github.com/user-attachments/assets/e223bc29-06d8-47f1-81a6-73611ccafaa1)
+![image](https://github.com/user-attachments/assets/fabd85ef-86e3-4865-b0ab-10c05628df18)
+
+
 
 If any issues arise please create an issue on the github repo and email me at 
 wdcolbur@calpoly.edu
