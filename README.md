@@ -31,7 +31,7 @@ The architecture for the redis stream is simple but dynamic enough to allow for 
 The “web interface” is simply a portal hosted on a client device that allows a user to send messages using a QUAD Pro duck. The functionality on desktop and mobile is exactly the same, which is key to the goals of the project. It should be as accessible as possible for any end-user regardless of their device or location. The bottom of the page is a chat box that functions similarly to a text message interface. Sent messages are displayed justified on the right, and received are on the left.
 
 ### CDP 
-Description of what CDP does
+The CDP (Cluster-Duck-Protocol) directory has code that takes messages from the web-interface to tell the radio to behave as a Ducklink, PapaDuck, MamaDuck, or a DetectorDuck as well as the data to put into the CDP packet if the radio is going to send data. If a CDP packet needs to be formed it will send the packet to the LoRa section to transmit. If the radio is set to handle any incoming received packets it will (a PapaDuck or Mamaduck wait to receive CDP packets) check the packet to see of that particular duck needs to send commands or acknowledgements and send the data back to the LoRa radio if necessary. More information about the ducks in detail and how they operate is in this link: https://docs.google.com/document/d/1uDrMVyc-jzSR5LkHCX8EE5CS4pl8BdmXs_a-XMbBqtw/edit
 
 
 ### LoRa
